@@ -15,19 +15,21 @@ data = pd.read_csv('./data.csv', error_bad_lines=False)
 data = data.dropna()
 data = shuffle(data).reset_index(drop=True)
 data['happiness_index'] = data['happiness_index'] + 2
-data = data[['user_friends_count', 'user_followers_count', 'user_tweet_count', 'retweet_count', 'favorite_count', 'exclamation_number', 'length', 'question_number', 'uppercase_ratio', 'nlppred', 'happiness_index']].values
+data = data[['user_friends_count', 'user_followers_count', 'retweet_count', 'exclamation_number', 'length', 'question_number', 'uppercase_ratio', 'nlppred', 'happiness_index']].values
 
 sz = data.shape
+max_idx = sz[1] - 1
 
 train = data[:int(sz[0] * 0.7), :]
 test = data[int(sz[0] * 0.7):, :]
 
-train_X = train[:, :9]
-train_Y = train[:, 10]
+train_X = train[:, :max_idx - 1]
+train_Y = train[:, max_idx]
 
-test_X = test[:, :9]
-test_Y = test[:, 10]
+test_X = test[:, :max_idx - 1]
+test_Y = test[:, max_idx]
 
+xg_data = xgb.DMatrix(data[:, :max_idx - 1], label = data[:, max_idx])
 xg_train = xgb.DMatrix(train_X, label=train_Y)
 xg_test = xgb.DMatrix(test_X, label=test_Y)
 # setup parameters for xgboost
@@ -36,7 +38,8 @@ param = {}
 param['objective'] = 'multi:softmax'
 # scale weight of positive examples
 param['eta'] = 0.1
-param['max_depth'] = 5
+param['max_depth'] = 6
+param['subsample'] = 0.8
 param['silent'] = 1
 param['nthread'] = 4
 param['num_class'] = 5
@@ -58,3 +61,7 @@ pred_prob = bst.predict(xg_test).reshape(test_Y.shape[0], 5)
 pred_label = np.argmax(pred_prob, axis=1)
 error_rate = np.sum(pred_label != test_Y) / test_Y.shape[0]
 print('Test error using softprob = {}'.format(error_rate))
+
+# do cross validation
+res = xgb.cv(param, xg_data, num_round, nfold=5)
+print(res)

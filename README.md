@@ -20,11 +20,15 @@ Conduct XGBoost (https://xgboost.readthedocs.io/en/latest/).
 numpy, pandas, xgboost
 ### Install XGBoost
 On Mac:
-```brew install gcc5
-pip install xgboost```
+```
+brew install gcc5
+pip install xgboost
+```
 On Ubuntu (Python package):
-```cd python-package
-sudo python setup.py install```
+```
+cd python-package
+sudo python setup.py install
+```
 ### Input
 The code reads 'data.csv' to train model.
 ### Output

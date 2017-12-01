@@ -16,7 +16,7 @@ warnings.filterwarnings(action="ignore", category=DataConversionWarning)
 # Load the data from csv
 df = pd.read_csv('data.csv', error_bad_lines=False)
 df = df.dropna()
-df = shuffle(df, random_state=0).reset_index(drop=True)
+df = shuffle(df).reset_index(drop=True)
 
 # print(df.head())
 # >>> created_at, favorite_count, geo, happiness_index, hashtags,
@@ -27,13 +27,12 @@ df = shuffle(df, random_state=0).reset_index(drop=True)
 # Select features
 # df = df.replace('?', np.nan)
 # data_X = df.drop('happiness_index', axis=1).values
-# data_X = df[['user_friends_count', 'user_followers_count', 'user_tweet_count', 'retweet_count', 'favorite_count', 'exclamation_number', 'length', 'question_number', 'uppercase_ratio', 'nlppred']].values
-data_X = df[['user_friends_count', 'user_followers_count', 'retweet_count', 'exclamation_number', 'length', 'question_number', 'uppercase_ratio', 'nlppred']].values
-# data_X = np.delete(data_X, np.s_[0], axis=1)
+data_X = df[['user_friends_count', 'user_followers_count', 'user_tweet_count', 'retweet_count', 'favorite_count', 'exclamation_number', 'length', 'question_number', 'uppercase_ratio', 'nlppred']].values
+data_X = np.delete(data_X, np.s_[0], axis=1)
 data_y = df['happiness_index'].values
 
 # Over sampling
-ros = RandomOverSampler(random_state=0)
+ros = RandomOverSampler()
 X_resampled, y_resampled = ros.fit_sample(data_X, data_y)
 
 # # Check over-sampling result
@@ -82,8 +81,8 @@ for k, (train, test) in enumerate(k_fold.split(X_resampled, y_resampled)):
     # Explained variance score: 1 is perfect prediction
     r2 = r2_score(y_resampled[test], data_y_pred)
 
-    print("\n[fold {0}] \nCoefficients: {1} \nMean squared error: {2:.2f} \nVariance score: {3:.2f} \nAccuracy: {4:.2f}".
-          format(k, coef, mse, r2, accuracy))
+    # print("\n[fold {0}] \nCoefficients: {1} \nMean squared error: {2:.2f} \nVariance score: {3:.2f} \nAccuracy: {4:.2f}".
+    #       format(k, coef, mse, r2, accuracy))
 
 print('\n10-CV MSE = {0:.4f} Accuracy = {1:.4f}\n'.format(np.mean(mses), np.mean(accuracies)))
 

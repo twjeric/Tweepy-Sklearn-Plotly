@@ -33,3 +33,17 @@ sudo python setup.py install
 The code reads 'data.csv' to train model.
 ### Output
 The test error of using softmax or softprob is printed to the console.
+### Usage
+Set the parameters according to the result of GridSearchCV.py
+
+## GridSearchCV.py
+### Description
+Parameter grid search with xgboost
+### Requirements
+numpy, pandas, scikit-learn, xgboost
+### Input
+The code reads 'data.csv' to train model.
+### Output
+The best parameters and the corresponding accuracy of the model is printed to the console.
+### Usage
+Change the *param_grid* to search the best parameters.

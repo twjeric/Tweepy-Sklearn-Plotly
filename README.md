@@ -46,7 +46,7 @@ sudo python setup.py install
 ### Input
 The code reads 'data.csv' to train model.
 ### Output
-The test error of using softmax or softprob is printed to the console.
+The test error of using softmax or softprob with hold-out validation or cross-validation is printed to the console.
 ### Usage
 Set the parameters according to the result of GridSearchCV.py
 

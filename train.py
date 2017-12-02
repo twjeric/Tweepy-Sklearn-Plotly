@@ -37,15 +37,17 @@ param = {}
 # use softmax multi-class classification
 param['objective'] = 'multi:softmax'
 # scale weight of positive examples
-param['eta'] = 0.1
+param['eta'] = 0.03
 param['max_depth'] = 6
-param['subsample'] = 0.8
 param['silent'] = 1
 param['nthread'] = 4
 param['num_class'] = 5
+param['min_child_weight'] = 11
+param['subsample'] = 0.8
+param['colsample_bytree'] = 0.7
 
 watchlist = [(xg_train, 'train'), (xg_test, 'test')]
-num_round = 5
+num_round = 150
 bst = xgb.train(param, xg_train, num_round, watchlist)
 # get prediction
 pred = bst.predict(xg_test)

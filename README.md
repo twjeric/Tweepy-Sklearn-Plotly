@@ -40,8 +40,7 @@ pip install xgboost
 ```
 On Ubuntu (Python package):
 ```
-cd python-package
-sudo python setup.py install
+pip install xgboost
 ```
 ### Input
 The code reads 'data.csv' to train model.

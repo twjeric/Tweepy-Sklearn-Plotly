@@ -67,8 +67,8 @@ Predict happiness index from tweets.
 ### Requirements
 pandas, xgboost
 ### Input
-The code uses the model in 'XGB.model' to do prediction.
+The code uses the model in 'XGB.model' to do prediction. The code reads all csv file in the folder './test_data/' and do prediction on each dataset.
 ### Output
-The predicted happiness index along with the created time of the tweet are saved in file 'result.csv'.
+The predicted happiness index along with the created time of the tweet are saved in files '*_result.csv' under the folder './predictions/'.
 ### Usage
-Make sure 'XGB.model' is in the same directory and run this python file.
+Make sure 'XGB.model' is in the same directory, all the test data csv files is in the folder './test_data/', and there is a folder './predictions', then run this python file.

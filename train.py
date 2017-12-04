@@ -1,16 +1,11 @@
 #!/usr/bin/python
 
-from __future__ import division
-
 import numpy as np
 import pandas as pd
 import xgboost as xgb
 from sklearn.utils import shuffle
 
 # label need to be 0 to num_class -1
-data = np.loadtxt('./dermatology.data', delimiter=',',
-        converters={33: lambda x:int(x == '?'), 34: lambda x:int(x)-1})
-
 data = pd.read_csv('./data.csv', error_bad_lines=False)
 data = data.dropna()
 data = shuffle(data).reset_index(drop=True)

@@ -57,6 +57,18 @@ numpy, pandas, scikit-learn, xgboost
 ### Input
 The code reads 'data.csv' to train model.
 ### Output
-The best parameters and the corresponding accuracy of the model is printed to the console.
+The best parameters and the corresponding accuracy of the model is printed to the console. The best model is printed to the console and is saved in file 'XGB.model'.
 ### Usage
 Change the *param_grid* to search the best parameters.
+
+## predict.py
+### Description
+Predict happiness index from tweets.
+### Requirements
+pandas, xgboost
+### Input
+The code uses the model in 'XGB.model' to do prediction.
+### Output
+The predicted happiness index along with the created time of the tweet are saved in file 'result.csv'.
+### Usage
+Make sure 'XGB.model' is in the same directory and run this python file.

@@ -1,3 +1,4 @@
+import glob
 import pandas as pd
 import pickle
 import xgboost as xgb
@@ -5,16 +6,17 @@ import xgboost as xgb
 with open('XGB.model', "r") as fp:
     clf = pickle.load(fp)
 
-data = pd.read_csv('./test_trump_nlp.csv', error_bad_lines=False)
-data = data.dropna()
-result = data[['created_at']]
-result.rename(columns = {'created_at':'dateTime'}, inplace=True)
-data = data[['user_friends_count', 'user_followers_count', 'retweet_count', 'exclamation_number', 'length', 'question_number', 'uppercase_ratio', 'nlppred']]
-data['retweet_count'] = pd.to_numeric(data['retweet_count'])
+for filename in glob.iglob('./test_data/*.csv'):
+    data = pd.read_csv(filename, error_bad_lines=False)
+    data = data[['user_friends_count', 'user_followers_count', 'retweet_count', 'exclamation_number', 'length', 'question_number', 'uppercase_ratio', 'nlppred', 'created_at']]
+    data = data.dropna()
+    data['retweet_count'] = pd.to_numeric(data['retweet_count'])
+    result = data[['created_at']]
+    result.rename(columns = {'created_at':'dateTime'}, inplace=True)
 
-predictions = clf.predict(data) - 2
+    predictions = clf.predict(data.drop('created_at', axis=1)) - 2
 
-result['prediction'] = predictions
-result['prediction'] = result['prediction'].astype(int)
-result.to_csv('result.csv', index=False)
-
+    result['prediction'] = predictions
+    result['prediction'] = result['prediction'].astype(int)
+    filename = filename.replace("./test_data", "./predictions").replace("_nlp", "_result")
+    result.to_csv(filename, index=False)

@@ -71,4 +71,19 @@ The code uses the model in 'XGB.model' to do prediction. The code reads all csv 
 ### Output
 The predicted happiness index along with the created time of the tweet are saved in files '*_result.csv' under the folder './predictions/'.
 ### Usage
-Make sure 'XGB.model' is in the same directory, all the test data csv files is in the folder './test_data/', and there is a folder './predictions', then run this python file.
+Make sure 'XGB.model' is in the same directory, all the test data csv files is in the folder './test_data/' named as 'test_*_nlp.csv', and there is a folder './predictions', then run this python file.
+
+## vis.py
+### Description
+Visualize twitter users' predicted happiness index using two kinds of graphs: line chart and heat map.
+### Requirements
+pandas, plotly
+### Input
+The code reads either a csv file from given filename or all csv files under the given directory ('./predictions/*.csv' by default).
+### Output
+Two html files are generated as the visualization results of the prediction.
+### Usage
+Before running, make sure the data files are named as 'test_*_result.csv'.
+- Set *aggregate_by_date*: whether the predicted values should be aggregated by date;
+- Set *log_value*: whether perform the natural logarithm on the predicted values;
+- Select the method of loading data: either load a single csv file or load all csv files under a directory.

@@ -1,6 +1,5 @@
 from math import log
 import glob
-import numpy as np
 import pandas as pd
 import plotly.offline as py
 import plotly.graph_objs as go

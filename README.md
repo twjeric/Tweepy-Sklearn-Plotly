@@ -34,6 +34,12 @@ Conduct XGBoost (https://xgboost.readthedocs.io/en/latest/).
 numpy, pandas, xgboost
 ### Install XGBoost
 On Mac:
+
+&nbsp;&nbsp;&nbsp;&nbsp;Using Anaconda
+```
+conda install -c anaconda py-xgboost
+```
+&nbsp;&nbsp;&nbsp;&nbsp;Without Anaconda
 ```
 brew install gcc5
 pip install xgboost

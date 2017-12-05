@@ -1,26 +1,43 @@
 from math import log
+import glob
 import numpy as np
 import pandas as pd
 import plotly.offline as py
 import plotly.graph_objs as go
 
-# df = pd.read_csv(infile, parse_dates={'datetime': ['date', 'time']}, date_parser=dateparse)
-df1 = pd.read_csv('./predictions/test_disney_result.csv', parse_dates=['dateTime'])
 getDate = lambda x: x.date()
-df1['dateTime'] = df1['dateTime'].map(getDate)
-df1 = df1.groupby('dateTime').sum()
 f = lambda x: log(x+1) if x>0 else -log(-x+1)
-df1['prediction'] = df1['prediction'].map(f)
-# print(df.head())
-df2 = pd.read_csv('./predictions/test_trump_result.csv', parse_dates=['dateTime'])
-getDate = lambda x: x.date()
-df2['dateTime'] = df2['dateTime'].map(getDate)
-df2 = df2.groupby('dateTime').sum()
-f = lambda x: log(x+1) if x>0 else -log(-x+1)
-df2['prediction'] = df2['prediction'].map(f)
 
-df = df1.join(df2, how='outer', lsuffix='_l', rsuffix='_r', sort=True)
-df = df.rename(columns = {'prediction_l':'Disney', 'prediction_r':'Trump'})
+def load_single(filename, agg, l):
+	df = pd.read_csv(filename, parse_dates=['dateTime'])
+	start = filename.find('test_') + 5
+	end = filename.find('_result')
+	name = filename[start:end].title()
+	df = df.rename(columns = {'prediction':name})
+	if agg:
+		df['dateTime'] = df['dateTime'].map(getDate)
+		df = df.groupby('dateTime').sum()
+	else:
+		df = df.set_index('dateTime')
+	if l: df[name] = df[name].map(f)
+	return df
+
+def load_multiple(files='./predictions/*.csv', agg=True, l=True):
+	first = True;
+	df = None
+	for filename in glob.iglob(files):
+		df0 = load_single(filename, agg, l)
+		if first:
+			df = df0
+			first = False;
+		else:
+			df = df.join(df0, how='outer', sort=True)
+	return df
+
+aggregate_by_date = True
+log_value = False
+# df = load_single('./predictions/test_trump_result.csv', aggregate_by_date, log_value)
+df = load_multiple()
 
 traces_line = []
 
@@ -56,7 +73,7 @@ traces_heat = [
 
 layout_heat = go.Layout(
     title='Twitter Users Happiness Heatmap',
-    xaxis = dict(title='Date Time', nticks=6),
+    xaxis = dict(title='Date Time'),
     yaxis = dict(title='Users', ticks='')
 )
 

@@ -112,5 +112,5 @@ print('\n10-CV MSE = {0:.4f} Accuracy = {1:.4f}\n'.format(np.mean(mses), np.mean
 # print(classifier.coef_)
 
 # # Output predictions to csv file
-# prediction = pd.DataFrame(data_y_pred, columns=['predictions'])
-# df.join(prediction).to_csv('predictions.csv')
+# df['predictions'] = data_y_pred
+# df.to_csv('predictions.csv')
